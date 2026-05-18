@@ -28,15 +28,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install ruff pytest pytest-cov
+          pip install -r requirements-dev.txt
 
       - name: Lint with ruff
-        run: ruff check . --output-format=github
-        continue-on-error: true
+        run: ruff check bot tests --output-format=github
 
       - name: Run tests
-        run: pytest -v --cov=app --cov-report=term-missing || echo "No tests yet"
+        run: pytest -v --cov=bot --cov-report=term-missing --cov-fail-under=85
 
   docker-build:
     name: Docker image builds
